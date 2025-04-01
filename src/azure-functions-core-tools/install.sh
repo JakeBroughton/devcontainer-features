@@ -129,7 +129,12 @@ echo "(*) Installing Azure Functions Core Tools..."
 architecture="$(dpkg --print-architecture)"
 CACHED_AZURE_VERSION="${AZ_VERSION}" # In case we need to fallback to pip and the apt path has modified the AZ_VERSION variable.
 
-install_using_apt
+if [ "$architecture" = "arm64" ]; then
+  echo "(!) Azure Functions Core Tools is not available for arm64. Skipping."
+  exit 0
+else
+  install_using_apt
+fi
 
 # Clean up
 rm -rf /var/lib/apt/lists/*
